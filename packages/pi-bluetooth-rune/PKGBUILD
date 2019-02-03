@@ -9,7 +9,7 @@ pkgdesc="Services, firmware and udev rules to get integrated bluetooth running i
 arch=('armv6h' 'armv7h' 'aarch64')
 url=""
 license=('multiple')
-depends=('bluez-utils-compat')
+depends=('bluez')
 install=pi-bluetooth.install
 source=(BCM43430A1.hcd
         brcm43438.service

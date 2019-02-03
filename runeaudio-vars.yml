@@ -148,6 +148,8 @@ packages:
   - libva
   - base-devel
   - bluez
+  - rsync
+  - hiredis
 
 sources:
   - name: mpdscribble-rune
@@ -186,15 +188,16 @@ sources:
   - name: phpiredis-rune
     short: "phpiredis"
     pass: 1
-  - name: shairport-sync-rune
-    short: "shairport-sync-rune"
-    make_depends:
-      - git
-    pass: 2
   - name: libalac-rune
     short: "alac"
     make_depends:
       - git
+    pass: 2
+  - name: shairport-sync-rune
+    short: "shairport-sync-rune"
+    make_depends:
+      - git
+      - libconfig
     pass: 2
   - name: libupnpp-rune
     short: "libupnpp-rune"
@@ -252,6 +255,9 @@ sources:
     short: "bluez-alsa-git"
     make_depends:
       - git
+      - bluez-libs
+      - libfdk-aac
+      - sbc
     pass: 3
   - name: pi-bluetooth-rune
     short: "pi-bluetooth"

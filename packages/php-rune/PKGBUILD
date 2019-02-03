@@ -128,6 +128,8 @@ package() {
 	rm -rf ${pkgdir}/.{channels,depdb,depdblock,filemap,lock,registry}
 	
 	# remove static modules
+	rm -r ${pkgdir}/var/run
+	rm -r ${pkgdir}/var/log
 	rm -f ${pkgdir}/usr/lib/php/modules/*.a
 	# remove empty directory
 	rmdir ${pkgdir}/usr/include/php/include
