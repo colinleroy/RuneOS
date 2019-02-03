@@ -15,6 +15,10 @@
     pattern: "{{ item.name }}*{{ arch }}.pkg.tar.xz"
   register: existing
 
+- name: "install {{ item.name }} build dependancies "
+  shell: "pacman -S --needed --noconfirm {% for package in item.make_depends %} {{ package }} {% endfor %}"
+  when: existing.matched == 0 and item.make_depends is defined
+
 - name: "build {{ item.name }}"
   shell: "cd /usr/local/src/{{ item.name }} && sudo -u http makepkg -s"
   when: existing.matched == 0

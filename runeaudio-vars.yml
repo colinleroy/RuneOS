@@ -149,8 +149,6 @@ packages:
   - base-devel
   - bluez
 
-sources_root_url: https://github.com/gearhead/RuneOS/raw/master/packages/
-
 sources:
   - name: mpdscribble-rune
     short: "mpdscribble"
@@ -158,10 +156,26 @@ sources:
   - name: nginx-rune
     short: "nginx-rune"
     flags: "--force"
+    make_depends:
+      - git
     pass: 1
   - name: php-rune
     short: "php-rune"
     flags: "--force"
+    make_depends:
+      - file
+      - libmcrypt
+      - libltdl
+      - libpng
+      - libjpeg
+      - icu
+      - curl
+      - bzip2
+      - db
+      - gmp
+      - systemd
+      - re2c
+      - libxml2
     pass: 1
   - name: php-libevent
     short: "php-libevent"
@@ -174,24 +188,37 @@ sources:
     pass: 1
   - name: shairport-sync-rune
     short: "shairport-sync-rune"
+    make_depends:
+      - git
     pass: 2
   - name: libalac-rune
     short: "alac"
+    make_depends:
+      - git
     pass: 2
   - name: libupnpp-rune
     short: "libupnp-rune"
+    make_depends:
+      - git
+      - autoconf
     pass: 2
   - name: upmpdcli-rune
     short: "upmpdcli-rune"
     pass: 2
   - name: ashuffle-rune
     short: "ashuffle-rune"
+    make_depends:
+      - clang
+      - git
     pass: 2
   - name: libspotify
     short: "libspotify"
     pass: 2
   - name: spop-rune
     short: "spop-rune"
+    make_depends:
+      - cmake
+      - python2
     pass: 2
   - name: hfsprogs-rune
     short: "hfsprogs-rune"
@@ -201,21 +228,41 @@ sources:
     pass: 2
   - name: amixer-webui
     short: "amixer-webui"
+    make_depends:
+      - python
+      - python-pip
+      - git
     pass: 2
   - name: snapcast
     short: "snapcast"
+    make_depends:
+      - git
+      - alsa-utils
     pass: 2
   - name: bluez-utils-rune
     short: "bluez-utils"
+    make_depends:
+      - dbus
+      - libical
+      - systemd
     pass: 3
   - name: bluez-alsa-git
     short: "bluez-alsa-git"
+    make_depends:
+      - git
     pass: 3
   - name: pi-bluetooth-rune
     short: "pi-bluetooth"
     pass: 3
   - name: linux-rune-4.14.34-1_dsd_384k
     short: "linux-raspberrypi-dsd-384k"
+    make_depends:
+      - xmlto
+      - docbook-xsl
+      - kmod
+      - inetutils
+      - bc
+      - git
     flags: "--force"
     pass: 3
 
