@@ -185,6 +185,9 @@ sources:
   - name: php-pthreads
     short: "php-pthreads"
     pass: 1
+  - name: phpredis-rune
+    short: "phpredis"
+    pass: 1
   - name: phpiredis-rune
     short: "phpiredis"
     pass: 1
@@ -278,8 +281,6 @@ sources:
 config_files:
   - src: /var/www/app/config/_os/etc/motd
     dest: /etc/motd
-  - src: /var/www/app/config/_os/etc/issue
-    dest: /etc/issue
   - src: /var/www/app/config/_os/etc/bash.bashrc
     dest: /etc/bash.bashrc
   - src: /var/www/app/config/defaults/hostapd.conf
@@ -306,8 +307,6 @@ config_files:
     dest: /etc/samba/smb-prod.conf
   - src: /var/www/app/config/defaults/upmpdcli.conf
     dest: /etc/upmpdcli.conf
-  - src: /var/www/app/config/defaults/spopd.conf
-    dest: /etc/spop/spopd.conf
   - src: /var/www/app/config/defaults/wpa_supplicant.conf
     dest: /etc/wpa_supplicant/wpa_supplicant.conf
   - src: /var/www/app/config/defaults/hosts

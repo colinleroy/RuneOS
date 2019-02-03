@@ -1,0 +1,47 @@
+---
+
+- name: link start screen
+  file:
+    src: /usr/share/bootsplash/start.png
+    dest: /usr/share/plymouth/splash.png
+    state: link
+    force: yes
+
+- name: link halt screen
+  file:
+    src: /usr/share/bootsplash/shutdown.png
+    dest: /usr/share/plymouth/halt.png
+    state: link
+    force: yes
+
+- name: link poweroff screen
+  file:
+    src: /usr/share/bootsplash/shutdown.png
+    dest: /usr/share/plymouth/poweroff.png
+    state: link
+    force: yes
+
+- name: link reboot screen
+  file:
+    src: /usr/share/bootsplash/reboot.png
+    dest: /usr/share/plymouth/reboot.png
+    state: link
+    force: yes
+
+- name: fix services
+  template:
+    src: plymouth-lite-start.service
+    dest: /usr/lib/systemd/system/plymouth-lite-start.service
+
+- name: issue
+  template:
+    src: issue
+    dest: /etc/issue
+
+- name: enable plymouth-lite
+  shell: "systemctl enable {{ item }}"
+  with_items:
+    - plymouth-lite-halt
+    - plymouth-lite-poweroff
+    - plymouth-lite-reboot
+    - plymouth-lite-start

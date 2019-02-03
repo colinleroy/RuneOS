@@ -19,7 +19,9 @@
     - name: configure packages
       include_role:
         name: runeaudio-configure-packages
-    - name: build matchbox
+    - name: build AUR packages
       include_role:
-        name: runeaudio-build-matchbox
-#    - name: ply-image
+        name: archlinux-build-aur
+    - name: configure plymouth-lite
+      include_role:
+        name: runeaudio-plymouth-lite

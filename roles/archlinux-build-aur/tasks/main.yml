@@ -23,6 +23,7 @@
   with_items:
     - libmatchbox
     - matchbox-window-manager
+    - plymouth-lite-rbp-git
 
 - name: untar sources
   unarchive:
@@ -32,6 +33,7 @@
   with_items:
     - libmatchbox
     - matchbox-window-manager
+    - plymouth-lite-rbp-git
 
 - name: patch PKGBUILD
   lineinfile: 
@@ -41,6 +43,7 @@
   with_items:
     - libmatchbox
     - matchbox-window-manager
+    - plymouth-lite-rbp-git
 
 - name: chown sources to user
   shell: "chown -R http /usr/local/src/"
@@ -57,3 +60,5 @@
         - startup-notification
     - name: matchbox-window-manager
       short: "matchbox-window-manager"
+    - name: plymouth-lite-rbp-git
+      short: plymouth-lite-rbp-git

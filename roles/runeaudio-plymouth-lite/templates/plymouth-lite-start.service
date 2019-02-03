@@ -1,0 +1,12 @@
+[Unit]
+Description=Show Plymouth-lite Start Screen
+DefaultDependencies=no
+After=local-fs.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/ply-image /usr/share/plymouth/splash.png
+
+[Install]
+WantedBy=sysinit.target
