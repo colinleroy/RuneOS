@@ -1,0 +1,76 @@
+---
+
+- name: setup sudo to http
+  template:
+    src: sudoers.d.http
+    dest: /etc/sudoers.d/http
+
+- name: install necessary packages
+  shell: "which makepkg || pacman -S {{ item }} --noconfirm"
+  with_items:
+    - base-devel
+
+- name: create sources directory
+  file:
+    path: /usr/local/src/matchbox
+    state: directory
+
+- name: get package source
+  get_url:
+    url: "https://aur.archlinux.org/cgit/aur.git/snapshot/{{ item }}.tar.gz"
+    dest: /usr/local/src/matchbox/
+    timeout: 1800
+  with_items:
+    - libmatchbox
+    - matchbox-window-manager
+    
+- name: untar sources
+  unarchive:
+    remote_src: true
+    src: "/usr/local/src/matchbox/{{ item }}.tar.gz"
+    dest: /usr/local/src/matchbox/
+  with_items:
+    - libmatchbox
+    - matchbox-window-manager
+
+- name: patch PKGBUILD
+  lineinfile: 
+    dest: "/usr/local/src/matchbox/{{ item }}/PKGBUILD"
+    regexp: "^arch="
+    line: "arch=('{{ arch }}')"
+  with_items:
+    - libmatchbox
+    - matchbox-window-manager
+
+- name: chown sources to user
+  shell: "chown -R http /usr/local/src/matchbox/"
+  warn: false
+
+- name: install dependancies
+  shell: "pacman -Q {{ item }} || pacman -S {{ item }} --noconfirm"
+  with_items:
+    - xsettings-client
+    - startup-notification
+
+- name: build libmatchbox
+  shell: "which matchbox-window-manager || cd /usr/local/src/matchbox/{{ item }} && sudo -u http makepkg -s"
+  with_items:
+    - libmatchbox
+    - matchbox-window-manager
+
+- name: install libmatchbox
+  shell: "which matchbox-window-manager || pacman -U /usr/local/src/matchbox/{{ item }}/{{ item}}*{{ arch }}.pkg.tar.xz --noconfirm"
+  with_items:
+    - libmatchbox
+
+- name: build matchbox-window-manager
+  shell: "which matchbox-window-manager || cd /usr/local/src/matchbox/{{ item }} && sudo -u http makepkg -s"
+  with_items:
+    - matchbox-window-manager
+
+- name: install matchbox-window-manager
+  shell: "which matchbox-window-manager || pacman -U /usr/local/src/matchbox/{{ item }}/{{ item}}*{{ arch }}.pkg.tar.xz --noconfirm"
+  with_items:
+    - matchbox-window-manager
+
+

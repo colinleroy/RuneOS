@@ -1,0 +1,264 @@
+---
+
+- name: rmdir /var/run
+  file:
+    path: /var/run
+    state: absent
+
+- name: link /run to /var
+  file:
+    src: /run
+    dest: /var/run
+    state: link
+
+- name: fix bluetooth.conf
+  blockinfile:
+    path: /usr/share/dbus-1/system.d/bluetooth.conf
+    marker: "<!-- bluealsa ANSIBLE MANAGED BLOCK -->"
+    insertbefore: "</busconfig>"
+    block: |
+        <policy user="bluealsa">
+          <allow send_destination="org.bluez"/>
+        </policy>
+
+- name: Bluetooth auto-enable
+  lineinfile:
+    dest: "/etc/bluetooth/main.conf"
+    regexp: "^AutoEnable"
+    line: "AutoEnable=true"
+
+- name: link /srv/http to /var/www
+  file:
+    src: /srv/http
+    dest: /var/www
+    state: link
+
+- name: cleanup locales
+  template:
+    src: locale.gen
+    dest: /etc/locale.gen
+
+- name: setup sudo to http
+  template:
+    src: sudoers.d.http
+    dest: /etc/sudoers.d/http
+
+- name: regenerate locales
+  shell: "locale-gen && localectl set-locale LANG=en_US.UTF-8"
+
+- name: setup nanorc
+  template:
+    src: nano.rc
+    dest: /etc/nanorc
+
+- name: stop auditd from spamming dmesg
+  lineinfile:
+    dest: /boot/cmdline.txt
+    regexp: "^root"
+    line: "root=/dev/mmcblk0p2 rw rootwait console=ttyAMA0,115200 console=tty1 selinux=0 plymouth.enable=0 fsck.repair=yes smsc95xx.turbo_mode=N dwc_otg.lpm_enable=0 kgdboc=ttyAMA0,115200 elevator=noop audit=0 quiet"
+
+- name: git clone RuneUI
+  shell: "git clone -b {{ git.branch }} {{ git.repository }} /var/www  || (cd /var/www && git pull)"
+
+- name: chown http directory
+  file:
+    path: /srv/http
+    state: directory
+    owner: http
+    group: http
+    recurse: yes
+
+- name: cleanup log directory
+  file: 
+    path: /var/log
+    state: absent
+  ignore_errors: true
+
+- name: create log and tmp directories
+  file: 
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /var/log
+    - /var/tmp
+    - /var/www/tmp
+
+- name: setup fstab
+  blockinfile:
+    path: /etc/fstab
+    marker: "#runeaudio ANSIBLE MANAGED BLOCK"
+    block: |
+        logs            /var/log tmpfs nodev,nosuid,noatime,mode=1777,size=5M                        0       0
+        rune-logs       /var/log/runeaudio tmpfs nodev,nosuid,noatime,mode=1777,size=5M              0       0
+        var-tmp         /var/tmp tmpfs nodev,nosuid,noatime,mode=1777,size=5M                        0       0
+        http-tmp        /srv/http/tmp tmpfs nodev,nosuid,noatime,mode=1777,size=5M,uid=http,gid=http 0       0
+
+- name: mount /var/log
+  shell: "mount /var/log"
+
+- name: create runeaudio log directory
+  file: 
+    path: /var/log/runeaudio
+    state: directory
+
+- name: mount new directories
+  shell: "mount -a"
+
+- name: drop alarm user
+  user:
+    name: alarm
+    state: absent
+    remove: yes
+
+- name: remove limits.d
+  file:
+    path: /etc/security/limits.d
+    state: absent
+
+- name: link nginx conf
+  file:
+    src: /etc/nginx/nginx-prod.conf
+    dest: /etc/nginx/nginx.conf
+    state: link
+    force: yes
+
+- name: link smb conf
+  file:
+    src: /etc/samba/smb-prod.conf
+    dest: /etc/samba/smb.conf
+    state: link
+    force: yes
+
+- name: create nginx html directory
+  file:
+    path: /etc/nginx/html
+    state: directory
+
+- name: copy configuration files
+  shell: "cp {{ item.src }} {{ item.dest }}"
+  with_items:
+    - "{{ config_files }}"
+
+- name: unmask services
+  shell: "systemctl unmask {{ item }}"
+  with_items:
+    - rune_SY_wrk
+    - rune_shutdown
+    - systemd-journald
+
+- name: disable services
+  shell: "systemctl disable {{ item }}"
+  with_items:
+    - ashuffle
+    - mpd
+    - mpdscribble
+    - nmb
+    - smb
+    - udevil
+    - upmpdcli
+    - hostapd
+    - shairport-sync
+    - local-browser
+    - rune_SSM_wrk
+    - rune_PL_wrk
+    - dhcpcd
+    - systemd-timesyncd
+    - php-fpm
+    - bluetooth
+
+- name: enable services
+  shell: "systemctl enable {{ item }}"
+  with_items:
+    - avahi-daemon
+    - haveged
+    - nginx
+    - redis
+    - rune_SY_wrk
+    - sshd
+    - systemd-resolved
+    - systemd-journald
+    - chronyd
+    - amixer-webui
+    - brcm43438 
+    - cronie
+    - nginx
+    - redis
+    - rune_shutdown
+    - php-fpm
+
+- name: stop services
+  shell: "systemctl stop {{ item }}"
+  with_items:
+    - ashuffle
+    - mpd
+    - spopd
+    - smb
+    - nmb
+    - shairport-sync
+    - local-browser
+    - rune_SSM_wrk
+    - rune_PL_wrk
+    - rune_SY_wrk
+    - upmpdcli
+    - bluetooth
+
+- name: stop journald
+  shell: "systemctl stop systemd-journald"
+
+- name: mask journald
+  shell: "systemctl mask systemd-journald && systemctl mask systemd-journal-flush.service"
+
+- name: mask logind
+  shell: "systemctl disable systemd-logind && systemctl mask systemd-logind"
+
+- name: link Orion script
+  file:
+    src: /srv/http/command/orion_optimize.sh
+    dest: /usr/bin/orion_optimize.sh
+    state: link
+
+- name: setup MPD directory structure
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: mpd
+    group: audio
+  with_items:
+    - /mnt/MPD
+    - /mnt/MPD/USB
+    - /mnt/MPD/Webradio
+    - /mnt/MPD/NAS
+    - /mnt/MPD/LocalStorage
+
+- name: start redis
+  shell: "systemctl start redis"
+
+- name: set timezone
+  shell: "timedatectl set-timezone Pacific/Pago_Pago && redis-cli set timezone 'Pacific/Pago_Pago'"
+
+- name: chmod command files
+  shell: "chmod +x /var/www/command/* /var/www/db/redis_datastore_setup /var/www/db/redis_acards_details /etc/X11/xinit/start_chromium.sh"
+
+#NOT NEEDED
+#- name: set mpd group
+#  lineinfile:
+#    dest: "/usr/lib/systemd/system/mpd.service"
+#    regexp: "^Group="
+#    line: "Group=audio"
+#    insertafter: "^User="
+
+- name: fix mpd socket
+  lineinfile:
+    path: /usr/lib/systemd/system/mpd.socket
+    regexp: "^ListenStream=.*sock"
+    line: "ListenStream=/run/mpd.sock"
+
+- name: setup datastore
+  shell: "/var/www/db/redis_datastore_setup reset"
+
+- name: refresh ao
+  shell: /var/www/command/refresh_ao
+
+- name: set hostname
+  hostname:
+    name: runeaudio

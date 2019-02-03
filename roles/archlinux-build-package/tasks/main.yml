@@ -1,0 +1,23 @@
+---
+
+- name: chown sources to user
+  shell: "chown -R http /usr/local/src/{{ item.name }}/"
+
+#- name: install dependancies
+#  shell: "pacman -Q {{ item }} || pacman -S {{ item }} --noconfirm"
+#  with_items:
+#    - xsettings-client
+#    - startup-notification
+
+- name: "check if {{ item.name }} is built"
+  find:
+    path: "/usr/local/src/{{ item.name }}/"
+    pattern: "{{ item.name }}*{{ arch }}.pkg.tar.xz"
+  register: existing
+
+- name: "build {{ item.name }}"
+  shell: "cd /usr/local/src/{{ item.name }} && sudo -u http makepkg -s"
+  when: existing.matched == 0
+
+- name: "install {{ item.name }}"
+  shell: "pacman -U /usr/local/src/{{ item.name }}/{{ item.name }}*{{ arch }}.pkg.tar.xz --noconfirm"

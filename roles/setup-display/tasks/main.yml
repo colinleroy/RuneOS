@@ -1,0 +1,77 @@
+---
+
+- name: create download directory
+  tempfile:
+    prefix: raspberry-image
+    state: directory
+  register: downloaddir
+
+- name: mount boot partition
+  shell: "mount /dev/{{ bootpart }} {{ downloaddir.path }}"
+  become: yes
+  warn: false
+
+- name: HDMI group
+  lineinfile:
+    dest: "{{ downloaddir.path }}/config.txt"
+    regexp: "^hdmi_group"
+    line: "hdmi_group={{ hdmi.group }}"
+  become: yes
+
+- name: HDMI mode
+  lineinfile:
+    dest: "{{ downloaddir.path }}/config.txt"
+    regexp: "^hdmi_mode"
+    line: "hdmi_mode={{ hdmi.mode }}"
+  become: yes
+
+- name: HDMI drive
+  lineinfile:
+    dest: "{{ downloaddir.path }}/config.txt"
+    regexp: "^hdmi_drive"
+    line: "hdmi_drive={{ hdmi.drive }}"
+  become: yes
+
+- name: HDMI cvt
+  lineinfile:
+    dest: "{{ downloaddir.path }}/config.txt"
+    regexp: "^hdmi_cvt"
+    line: "hdmi_cvt {{ hdmi.cvt }}"
+  become: yes
+
+- name: overscan
+  lineinfile:
+    dest: "{{ downloaddir.path }}/config.txt"
+    regexp: "^disable_overscan"
+    line: "disable_overscan 1"
+  become: yes
+
+- name: HDMI ignore_cec
+  lineinfile:
+    dest: "{{ downloaddir.path }}/config.txt"
+    regexp: "^hdmi_ignore_cec"
+    line: "hdmi_ignore_cec 1"
+  become: yes
+
+- name: gpu_mem
+  lineinfile:
+    dest: "{{ downloaddir.path }}/config.txt"
+    regexp: "^gpu_mem"
+    line: "gpu_mem 16"
+  become: yes
+
+- name: max_usb_current
+  lineinfile:
+    dest: "{{ downloaddir.path }}/config.txt"
+    regexp: "^max_usb_current"
+    line: "max_usb_current=1"
+  become: yes
+
+- name: umount boot partition
+  shell: "umount /dev/{{ bootpart }}"
+  become: yes
+
+- name: remove tmpdir
+  file:
+    path: "{{ downloaddir.path }}"
+    state: absent

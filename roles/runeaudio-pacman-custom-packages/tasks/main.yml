@@ -1,0 +1,33 @@
+---
+
+- name: synchronise sources directory
+  synchronize:
+    src: packages/
+    dest: /usr/local/src
+
+- name: build packages
+  include_role:
+    name: archlinux-build-package
+  when: item.pass == 1
+  with_items:
+    - "{{ sources }}"
+
+#- name: remove standard kernel
+#  shell: "(pacman -Q linux-raspberrypi && pacman -R linux-raspberrypi --noconfirm) || true"
+#
+#- name: build, pass 3
+#  shell: "pacman -Q {{ item.short }} || pacman -U /usr/local/src/{{ item.name }} --noconfirm {% if item.flags is defined %} {{ item.flags }} {% endif %}"
+#  when: item.pass == 3
+#  with_items:
+#    - "{{ sources }}"
+#
+#- name: remove sources directory
+#  file:
+#    path: /usr/local/src
+#    state: absent
+#
+#- name: link libreadline 8 to 7
+#  file:
+#    src: /usr/lib/libreadline.so.8
+#    dest: /usr/lib/libreadline.so.7
+#    state: link

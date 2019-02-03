@@ -1,0 +1,26 @@
+---
+- hosts: local
+
+  vars_files:
+    - runeaudio-vars.yml
+  tasks:
+    - name: partition card
+      include_role:
+        name: partition-card
+
+    - name: image copy
+      include_role:
+        name: image-copy
+
+    - name: setup display
+      include_role:
+        name: setup-display
+
+    - name: setup config
+      include_role:
+        name: setup-config
+
+    - name: setup logins
+      include_role:
+        name: setup-logins
+

@@ -1,0 +1,290 @@
+blockdevice: mmcblk0
+bootpart: mmcblk0p1
+rootpart: mmcblk0p2
+
+distribution:
+  #url: http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz
+  url: http://localhost/ArchLinuxARM-rpi-2-latest.tar.gz
+
+hdmi:
+  group: 2
+  mode: 87
+  cvt: 1024 600 60 6 0 0 0
+  drive: 1
+
+shadow:
+  root: $6$tc3SJUJFh$A.lVN4lk5tUvK5.KbvNRFrN4HfMvekizCrJ.eetGi9yfM9lrojwbwZn0fJUjSRa7DeHM/TwCDnnoQF1KvqezL0
+
+arch: armv7h
+
+git:
+  repository: https://github.com/colinleroy/RuneUI.git
+  branch: 0.5b-colin
+
+removed_packages:
+  - jfsutils
+  - lvm2
+  - man-db
+  - man-pages
+  - reiserfsprogs
+
+packages:
+  - git
+  - chrony
+  - redis
+  - libmcrypt
+  - libjpeg
+  - apr-util
+  - jansson
+  - gdk-pixbuf2
+  - libnotify
+  - wget
+  - ethtool
+  - avahi
+  - net-tools
+  - ifplugd
+  - wireless_tools
+  - wpa_supplicant
+  - wpa_actiond
+  - hostapd
+  - nfs-utils
+  - libupnp
+  - libxml2
+  - yasm
+  - nss-mdns
+  - nss
+  - nspr
+  - dnsmasq
+  - ntfs-3g
+  - dosfstools
+  - exfat-utils
+  - sshfs
+  - cifs-utils
+  - curlftpfs
+  - libnfs
+  - udevil
+  - sudo
+  - mc
+  - alsa-utils
+  - celt
+  - sox
+  - wavpack
+  - libao
+  - libmpdclient
+  - faad2
+  - sqlite3
+  - libmad
+  - libmms
+  - libid3tag
+  - audiofile
+  - mpg123
+  - mpc
+  - jsoncpp
+  - libmicrohttpd
+  - perl-uri
+  - perl-encode-locale
+  - perl-file-listing
+  - perl-html-parser
+  - perl-html-tagset
+  - perl-http-cookies
+  - perl-http-daemon
+  - perl-http-date
+  - perl-http-message
+  - perl-http-negotiate
+  - perl-io-html
+  - perl-libwww
+  - perl-lwp-mediatypes
+  - perl-net-http
+  - perl-parse-yapp
+  - perl-try-tiny
+  - perl-www-robotrules
+  - smartmontools
+  - parted
+  - python2-flask
+  - cronie
+  - xorg-iceauth
+  - xorg-luit
+  - xorg-server
+  - xorg-server-common
+  - xorg-sessreg
+  - xorg-setxkbmap
+  - xorg-twm
+  - xorg-xauth
+  - xorg-xbacklight
+  - xorg-xcmsdb
+  - xorg-xdpyinfo
+  - xorg-xdriinfo
+  - xorg-xev
+  - xorg-xgamma
+  - xorg-xhost
+  - xorg-xinit
+  - xorg-xinput
+  - xorg-xkbcomp
+  - xorg-xlsatoms
+  - xorg-xlsclients
+  - xorg-xmodmap
+  - xorg-xprop
+  - xorg-xrandr
+  - xorg-xrdb
+  - xorg-xrefresh
+  - xorg-xset
+  - xorg-xsetroot
+  - xorg-xvinfo
+  - xorg-xwininfo
+  - libxxf86dga
+  - libxxf86vm
+  - xf86-input-libinput
+  - xf86-video-fbdev
+  - xbindkeys
+  - ffmpeg
+  - mpd
+  - samba
+  - chromium
+  - libmpd
+  - libmpcdec
+  - openal
+  - libvdpau
+  - smbclient
+  - libva
+  - base-devel
+  - bluez
+
+sources_root_url: https://github.com/gearhead/RuneOS/raw/master/packages/
+
+sources:
+  - name: mpdscribble-rune
+    short: "mpdscribble"
+    pass: 1
+  - name: nginx-rune
+    short: "nginx-rune"
+    flags: "--force"
+    pass: 1
+  - name: php-rune
+    short: "php-rune"
+    flags: "--force"
+    pass: 1
+  - name: php-libevent
+    short: "php-libevent"
+    pass: 1
+  - name: php-pthreads
+    short: "php-pthreads"
+    pass: 1
+  - name: phpiredis-rune
+    short: "phpiredis"
+    pass: 1
+  - name: shairport-sync-rune
+    short: "shairport-sync-rune"
+    pass: 2
+  - name: libalac-rune
+    short: "alac"
+    pass: 2
+  - name: libupnpp-rune
+    short: "libupnp-rune"
+    pass: 2
+  - name: upmpdcli-rune
+    short: "upmpdcli-rune"
+    pass: 2
+  - name: ashuffle-rune
+    short: "ashuffle-rune"
+    pass: 2
+  - name: libspotify
+    short: "libspotify"
+    pass: 2
+  - name: spop-rune
+    short: "spop-rune"
+    pass: 2
+  - name: hfsprogs-rune
+    short: "hfsprogs-rune"
+    pass: 2
+  - name: hfsutils-rune
+    short: "hfsutils-rune"
+    pass: 2
+  - name: amixer-webui
+    short: "amixer-webui"
+    pass: 2
+  - name: snapcast
+    short: "snapcast"
+    pass: 2
+  - name: bluez-utils-rune
+    short: "bluez-utils"
+    pass: 3
+  - name: bluez-alsa-git
+    short: "bluez-alsa-git"
+    pass: 3
+  - name: pi-bluetooth-rune
+    short: "pi-bluetooth"
+    pass: 3
+  - name: linux-rune-4.14.34-1_dsd_384k
+    short: "linux-raspberrypi-dsd-384k"
+    flags: "--force"
+    pass: 3
+
+config_files:
+  - src: /var/www/app/config/_os/etc/motd
+    dest: /etc/motd
+  - src: /var/www/app/config/_os/etc/issue
+    dest: /etc/issue
+  - src: /var/www/app/config/_os/etc/bash.bashrc
+    dest: /etc/bash.bashrc
+  - src: /var/www/app/config/defaults/hostapd.conf
+    dest: /etc/hostapd/hostapd.conf
+  - src: /var/www/app/config/defaults/journald.conf
+    dest: /etc/systemd/journald.conf
+  - src: /var/www/app/config/defaults/mpdscribble.conf
+    dest: /etc/mpdscribble.conf
+  - src: /var/www/app/config/defaults/nginx-prod.conf
+    dest: /etc/nginx/nginx-prod.conf
+  - src: /var/www/app/config/defaults/50x.html
+    dest: /etc/nginx/html/50x.html
+  - src: /var/www/app/config/defaults/nsswitch.conf
+    dest: /etc/nsswitch.conf
+  - src: /var/www/app/config/defaults/php-fpm.conf
+    dest: /etc/php/php-fpm.conf
+  - src: /var/www/app/config/defaults/redis.conf
+    dest: /etc/redis.conf
+  - src: /var/www/app/config/defaults/shairport-sync.conf
+    dest: /etc/shairport-sync.conf
+  - src: /var/www/app/config/defaults/smb-dev.conf
+    dest: /etc/samba/smb-dev.conf
+  - src: /var/www/app/config/defaults/smb-prod.conf
+    dest: /etc/samba/smb-prod.conf
+  - src: /var/www/app/config/defaults/upmpdcli.conf
+    dest: /etc/upmpdcli.conf
+  - src: /var/www/app/config/defaults/spopd.conf
+    dest: /etc/spop/spopd.conf
+  - src: /var/www/app/config/defaults/wpa_supplicant.conf
+    dest: /etc/wpa_supplicant/wpa_supplicant.conf
+  - src: /var/www/app/config/defaults/hosts
+    dest: /etc/hosts
+  - src: /var/www/app/config/defaults/ashuffle.service
+    dest: /usr/lib/systemd/system/ashuffle.service
+  - src: /var/www/app/config/defaults/avahi_runeaudio.service
+    dest: /usr/lib/systemd/system/avahi_runeaudio.service
+  - src: /var/www/app/config/defaults/local-browser.service
+    dest: /usr/lib/systemd/system/local-browser.service
+  - src: /var/www/app/config/defaults/php-fpm.service
+    dest: /usr/lib/systemd/system/php-fpm.service
+  - src: /var/www/app/config/defaults/redis.service
+    dest: /usr/lib/systemd/system/redis.service
+  - src: /var/www/app/config/defaults/rune_PL_wrk.service
+    dest: /usr/lib/systemd/system/rune_PL_wrk.service
+  - src: /var/www/app/config/defaults/rune_SSM_wrk.service
+    dest: /usr/lib/systemd/system/rune_SSM_wrk.service
+  - src: /var/www/app/config/defaults/rune_SY_wrk.service
+    dest: /usr/lib/systemd/system/rune_SY_wrk.service
+  - src: /var/www/app/config/defaults/shairport-sync.service
+    dest: /usr/lib/systemd/system/shairport-sync.service
+  - src: /var/www/app/config/defaults/spopd.service
+    dest: /usr/lib/systemd/system/spopd.service
+  - src: /var/www/app/config/defaults/udevil.service
+    dest: /usr/lib/systemd/system/udevil.service
+  - src: /var/www/app/config/defaults/upmpdcli.service
+    dest: /usr/lib/systemd/system/upmpdcli.service
+  - src: /var/www/app/config/defaults/config.txt
+    dest: /boot/config.txt
+  - src: /var/www/app/config/_os/usr/lib/systemd/system/rune_shutdown.service
+    dest: /usr/lib/systemd/system/rune_shutdown.service
+  - src: /var/www/app/config/_os/etc/X11/xinit/start_chromium.sh
+    dest: /etc/X11/xinit/start_chromium.sh
+  - src: /var/www/app/config/_os/etc/X11/xinit/xinitrc
+    dest: /etc/X11/xinit/xinitrc

@@ -1,0 +1,82 @@
+---
+
+- name: install required components
+  apt:
+    name: ["coreutils", "mount", "tar", "gzip", "sshpass"]
+    state: present
+  become: yes
+
+- name: create download directory
+  tempfile:
+    prefix: raspberry-image
+    state: directory
+  register: downloaddir
+
+- name: download image
+  get_url:
+    url: "{{ distribution.url }}"
+    dest: "{{ downloaddir.path }}"
+    timeout: 1800
+  register: downloaded
+
+- name: umount boot partition
+  shell: "umount /dev/{{ bootpart }}"
+  become: yes
+  ignore_errors: true
+
+- name: umount root partition
+  shell: "umount /dev/{{ rootpart }}"
+  become: yes
+  ignore_errors: true
+
+- name: make boot directory
+  file: 
+    path: "{{ downloaddir.path }}/boot"
+    state: directory
+
+- name: make root directory
+  file: 
+    path: "{{ downloaddir.path }}/root"
+    state: directory
+
+- name: mount boot partition
+  shell: "mount /dev/{{ bootpart }} {{ downloaddir.path }}/boot"
+  become: yes
+  warn: false
+
+- name: mount root partition
+  shell: "mount /dev/{{ rootpart }} {{ downloaddir.path }}/root"
+  become: yes
+  warn: false
+
+- name: unarchive url
+  unarchive:
+    src: "{{ downloaded.dest }}"
+    dest: "{{ downloaddir.path }}/root"
+  ignore_errors: yes
+  become: yes
+
+- name: move boot files to boot partition
+  shell: "mv -f {{ downloaddir.path }}/root/boot/* {{ downloaddir.path }}/boot/"
+  become: yes
+
+- name: fix fstab
+  lineinfile:
+    path: "{{ downloaddir.path }}/root/etc/fstab"
+    regexp: "^/dev/mmcblk0p1"
+    line: "/dev/mmcblk0p1  /boot   vfat    defaults,rw        0       0"
+  become: yes
+
+- name: umount boot partition
+  shell: "umount /dev/{{ bootpart }}"
+  become: yes
+
+- name: umount root partition
+  shell: "umount /dev/{{ rootpart }}"
+  become: yes
+
+- name: remove tmpdir
+  file:
+    path: "{{ downloaddir.path }}"
+    state: absent
+

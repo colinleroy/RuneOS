@@ -1,0 +1,28 @@
+---
+
+- name: create download directory
+  tempfile:
+    prefix: raspberry-image
+    state: directory
+  register: downloaddir
+
+- name: mount boot partition
+  shell: "mount /dev/{{ bootpart }} {{ downloaddir.path }}"
+  become: yes
+  warn: false
+
+- name: dtparam audio
+  lineinfile:
+    dest: "{{ downloaddir.path }}/config.txt"
+    regexp: "^dtparam=audio="
+    line: "dtparam=audio=on"
+  become: yes
+
+- name: umount boot partition
+  shell: "umount /dev/{{ bootpart }}"
+  become: yes
+
+- name: remove tmpdir
+  file:
+    path: "{{ downloaddir.path }}"
+    state: absent
