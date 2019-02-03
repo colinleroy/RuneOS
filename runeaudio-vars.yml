@@ -197,7 +197,7 @@ sources:
       - git
     pass: 2
   - name: libupnpp-rune
-    short: "libupnp-rune"
+    short: "libupnpp-rune"
     make_depends:
       - git
       - autoconf

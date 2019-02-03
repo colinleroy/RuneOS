@@ -8,7 +8,6 @@
 - name: build packages
   include_role:
     name: archlinux-build-package
-  when: item.pass == 1
   with_items:
     - "{{ sources }}"
 

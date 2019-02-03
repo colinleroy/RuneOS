@@ -3,7 +3,7 @@
 
 pkgname=libupnpp-rune
 _pkgname=libupnpp
-pkgver=$(date +%Y%m%d)
+pkgver=0.17.0
 pkgrel=1
 pkgdesc="a C++ wrapper for libupnp - used with upmpdcli or upplay"
 #url="https://github.com/medoc92/libupnpp"
@@ -19,6 +19,7 @@ md5sums=('SKIP')
 build() {
 
   cd ${srcdir}/${_pkgname}
+  git checkout libupnpp-v${pkgver}
   ./autogen.sh
   ./configure --prefix=/usr
   make
