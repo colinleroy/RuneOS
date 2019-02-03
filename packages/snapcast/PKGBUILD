@@ -1,6 +1,7 @@
 # Maintainer: Bart De Vries <devriesb@gmail.com>
 
 pkgname=snapcast
+_pkgname=snapcast
 pkgver=0.14.0
 pkgrel=1
 pkgdesc="Synchronous multi-room audio player"
