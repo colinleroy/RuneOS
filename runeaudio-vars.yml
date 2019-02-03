@@ -211,15 +211,15 @@ sources:
       - clang
       - git
     pass: 2
-  - name: libspotify
-    short: "libspotify"
-    pass: 2
-  - name: spop-rune
-    short: "spop-rune"
-    make_depends:
-      - cmake
-      - python2
-    pass: 2
+#  - name: libspotify
+#    short: "libspotify"
+#    pass: 2
+#  - name: spop-rune
+#    short: "spop-rune"
+#    make_depends:
+#      - cmake
+#      - python2
+#    pass: 2
   - name: hfsprogs-rune
     short: "hfsprogs-rune"
     pass: 2
