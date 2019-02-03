@@ -12,7 +12,7 @@
 - name: "check if {{ item.name }} is built"
   find:
     path: "/usr/local/src/{{ item.name }}/"
-    pattern: "{{ item.name }}*{{ arch }}.pkg.tar.xz"
+    pattern: "{{ item.short }}*{{ arch }}.pkg.tar.xz"
   register: existing
 
 - name: "install {{ item.name }} build dependancies "
@@ -24,4 +24,4 @@
   when: existing.matched == 0
 
 - name: "install {{ item.name }}"
-  shell: "pacman -U /usr/local/src/{{ item.name }}/{{ item.name }}*{{ arch }}.pkg.tar.xz --noconfirm"
+  shell: "pacman -U /usr/local/src/{{ item.name }}/{{ item.short }}*{{ arch }}.pkg.tar.xz --noconfirm"
