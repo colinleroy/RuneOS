@@ -12,30 +12,30 @@
 
 - name: create sources directory
   file:
-    path: /usr/local/src/matchbox
+    path: /usr/local/src
     state: directory
 
 - name: get package source
   get_url:
     url: "https://aur.archlinux.org/cgit/aur.git/snapshot/{{ item }}.tar.gz"
-    dest: /usr/local/src/matchbox/
+    dest: /usr/local/src/
     timeout: 1800
   with_items:
     - libmatchbox
     - matchbox-window-manager
-    
+
 - name: untar sources
   unarchive:
     remote_src: true
-    src: "/usr/local/src/matchbox/{{ item }}.tar.gz"
-    dest: /usr/local/src/matchbox/
+    src: "/usr/local/src/{{ item }}.tar.gz"
+    dest: /usr/local/src/
   with_items:
     - libmatchbox
     - matchbox-window-manager
 
 - name: patch PKGBUILD
   lineinfile: 
-    dest: "/usr/local/src/matchbox/{{ item }}/PKGBUILD"
+    dest: "/usr/local/src/{{ item }}/PKGBUILD"
     regexp: "^arch="
     line: "arch=('{{ arch }}')"
   with_items:
@@ -43,34 +43,17 @@
     - matchbox-window-manager
 
 - name: chown sources to user
-  shell: "chown -R http /usr/local/src/matchbox/"
+  shell: "chown -R http /usr/local/src/"
   warn: false
 
-- name: install dependancies
-  shell: "pacman -Q {{ item }} || pacman -S {{ item }} --noconfirm"
+- name: build packages
+  include_role:
+    name: archlinux-build-package
   with_items:
-    - xsettings-client
-    - startup-notification
-
-- name: build libmatchbox
-  shell: "which matchbox-window-manager || (cd /usr/local/src/matchbox/{{ item }} && sudo -u http makepkg -s)"
-  with_items:
-    - libmatchbox
-    - matchbox-window-manager
-
-- name: install libmatchbox
-  shell: "which matchbox-window-manager || pacman -U /usr/local/src/matchbox/{{ item }}/{{ item}}*{{ arch }}.pkg.tar.xz --noconfirm"
-  with_items:
-    - libmatchbox
-
-- name: build matchbox-window-manager
-  shell: "which matchbox-window-manager || (cd /usr/local/src/matchbox/{{ item }} && sudo -u http makepkg -s)"
-  with_items:
-    - matchbox-window-manager
-
-- name: install matchbox-window-manager
-  shell: "which matchbox-window-manager || pacman -U /usr/local/src/matchbox/{{ item }}/{{ item}}*{{ arch }}.pkg.tar.xz --noconfirm"
-  with_items:
-    - matchbox-window-manager
-
-
+    - name: libmatchbox
+      short: "libmatchbox"
+      make_depends:
+        - xsettings-client
+        - startup-notification
+    - name: matchbox-window-manager
+      short: "matchbox-window-manager"

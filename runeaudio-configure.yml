@@ -10,9 +10,9 @@
   vars_files:
     - runeaudio-vars.yml
   tasks:
-#    - name: init pacman for Runeaudio
-#      include_role:
-#        name: runeaudio-pacman-init
+    - name: init pacman for Runeaudio
+      include_role:
+        name: runeaudio-pacman-init
     - name: pacman custom packages for Runeaudio
       include_role:
         name: runeaudio-pacman-custom-packages
