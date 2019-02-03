@@ -259,6 +259,18 @@
 - name: refresh ao
   shell: /var/www/command/refresh_ao
 
+# Fix for renamed services 
+- name: link smb to smbd
+  file:
+    src: /usr/lib/systemd/system/{{ item }}.service
+    dest: /usr/lib/systemd/system/{{ item }}d.service
+    state: link
+    force: yes
+  with_items:
+    - smb
+    - nmb
+
+
 - name: set hostname
   hostname:
     name: runeaudio

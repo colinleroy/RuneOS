@@ -53,7 +53,7 @@
     - startup-notification
 
 - name: build libmatchbox
-  shell: "which matchbox-window-manager || cd /usr/local/src/matchbox/{{ item }} && sudo -u http makepkg -s"
+  shell: "which matchbox-window-manager || (cd /usr/local/src/matchbox/{{ item }} && sudo -u http makepkg -s)"
   with_items:
     - libmatchbox
     - matchbox-window-manager
@@ -64,7 +64,7 @@
     - libmatchbox
 
 - name: build matchbox-window-manager
-  shell: "which matchbox-window-manager || cd /usr/local/src/matchbox/{{ item }} && sudo -u http makepkg -s"
+  shell: "which matchbox-window-manager || (cd /usr/local/src/matchbox/{{ item }} && sudo -u http makepkg -s)"
   with_items:
     - matchbox-window-manager
 

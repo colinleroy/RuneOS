@@ -211,6 +211,7 @@ sources:
       - clang
       - git
     pass: 2
+# PULLED FROM THE WEB by Spotify
 #  - name: libspotify
 #    short: "libspotify"
 #    pass: 2
@@ -239,13 +240,14 @@ sources:
       - git
       - alsa-utils
     pass: 2
-  - name: bluez-utils-rune
-    short: "bluez-utils"
-    make_depends:
-      - dbus
-      - libical
-      - systemd
-    pass: 3
+# DOESN'T BUILD
+#  - name: bluez-utils-rune
+#    short: "bluez-utils"
+#    make_depends:
+#      - dbus
+#      - libical
+#      - systemd
+#    pass: 3
   - name: bluez-alsa-git
     short: "bluez-alsa-git"
     make_depends:
@@ -254,17 +256,18 @@ sources:
   - name: pi-bluetooth-rune
     short: "pi-bluetooth"
     pass: 3
-  - name: linux-rune-4.14.34-1_dsd_384k
-    short: "linux-raspberrypi-dsd-384k"
-    make_depends:
-      - xmlto
-      - docbook-xsl
-      - kmod
-      - inetutils
-      - bc
-      - git
-    flags: "--force"
-    pass: 3
+# DOESN'T BUILD 
+#  - name: linux-rune-4.14.34-1_dsd_384k
+#    short: "linux-raspberrypi-dsd-384k"
+#    make_depends:
+#      - xmlto
+#      - docbook-xsl
+#      - kmod
+#      - inetutils
+#      - bc
+#      - git
+#    flags: "--force"
+#    pass: 3
 
 config_files:
   - src: /var/www/app/config/_os/etc/motd

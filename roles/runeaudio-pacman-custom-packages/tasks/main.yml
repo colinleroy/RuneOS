@@ -24,9 +24,3 @@
 #  file:
 #    path: /usr/local/src
 #    state: absent
-#
-#- name: link libreadline 8 to 7
-#  file:
-#    src: /usr/lib/libreadline.so.8
-#    dest: /usr/lib/libreadline.so.7
-#    state: link

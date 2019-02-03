@@ -3,12 +3,6 @@
 - name: chown sources to user
   shell: "chown -R http /usr/local/src/{{ item.name }}/"
 
-#- name: install dependancies
-#  shell: "pacman -Q {{ item }} || pacman -S {{ item }} --noconfirm"
-#  with_items:
-#    - xsettings-client
-#    - startup-notification
-
 - name: "check if {{ item.name }} is built"
   find:
     path: "/usr/local/src/{{ item.name }}/"
