@@ -125,6 +125,7 @@ package() {
 	install -D -m644 ${srcdir}/php-fpm.service ${pkgdir}/usr/lib/systemd/system/php-fpm.service
 	make install-pear INSTALL_ROOT=${pkgdir}
 	rm -rf ${pkgdir}/usr/share/pear/.{channels,depdb,depdblock,filemap,lock,registry}
+	rm -rf ${pkgdir}/.{channels,depdb,depdblock,filemap,lock,registry}
 	
 	# remove static modules
 	rm -f ${pkgdir}/usr/lib/php/modules/*.a
