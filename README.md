@@ -65,7 +65,6 @@ https://github.com/gearhead/RuneOS/tree/master/scripts
 
 There are some differences with the standard RuneAudio distribution:
 
-- nginx is from Archlinux instead of being rebuilt
 - Spotify doesn't work (they pulled libspotify from the Internet and I didn't
   want this installer to depend on binaries)
 - The kernel is the standard one
