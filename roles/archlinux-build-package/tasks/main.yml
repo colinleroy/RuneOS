@@ -1,21 +1,31 @@
 ---
 
+- name: get arch
+  include_role:
+    name: archlinux-get-arch
+
 - name: chown sources to user
-  shell: "chown -R http /usr/local/src/{{ item.name }}/"
+  shell: "chown -R http {{source_directory }}/{{ item.name }}/"
 
 - name: "check if {{ item.name }} is built"
   find:
-    path: "/usr/local/src/{{ item.name }}/"
-    pattern: "{{ item.short }}*{{ arch }}.pkg.tar.xz"
+    path: "{{source_directory }}/{{ item.name }}/"
+    pattern: "{{ item.pkgname }}*{{ arch }}.pkg.tar.xz"
   register: existing
 
 - name: "install {{ item.name }} build dependancies "
   shell: "pacman -S --needed --noconfirm {% for package in item.make_depends %} {{ package }} {% endfor %}"
   when: existing.matched == 0 and item.make_depends is defined
 
+- name: patch PKGBUILD
+  lineinfile: 
+    dest: "{{source_directory }}/{{ item.name }}/PKGBUILD"
+    regexp: "^arch="
+    line: "arch=('{{ arch }}')"
+
 - name: "build {{ item.name }}"
-  shell: "cd /usr/local/src/{{ item.name }} && sudo -u http makepkg -s"
+  shell: "cd {{source_directory }}/{{ item.name }} && sudo -u http makepkg -s"
   when: existing.matched == 0
 
 - name: "install {{ item.name }}"
-  shell: "pacman -U /usr/local/src/{{ item.name }}/{{ item.short }}*{{ arch }}.pkg.tar.xz --noconfirm"
+  shell: "pacman -U {{source_directory }}/{{ item.name }}/{{ item.pkgname }}*{{ arch }}.pkg.tar.xz --noconfirm"

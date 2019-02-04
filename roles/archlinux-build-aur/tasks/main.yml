@@ -1,5 +1,9 @@
 ---
 
+- name: get arch
+  include_role:
+    name: archlinux-get-arch
+
 - name: setup sudo to http
   template:
     src: sudoers.d.http
@@ -12,13 +16,13 @@
 
 - name: create sources directory
   file:
-    path: /usr/local/src
+    path: "{{source_directory }}"
     state: directory
 
 - name: get package source
   get_url:
     url: "https://aur.archlinux.org/cgit/aur.git/snapshot/{{ item }}.tar.gz"
-    dest: /usr/local/src/
+    dest: "{{source_directory }}/"
     timeout: 1800
   with_items:
     - libmatchbox
@@ -28,37 +32,26 @@
 - name: untar sources
   unarchive:
     remote_src: true
-    src: "/usr/local/src/{{ item }}.tar.gz"
-    dest: /usr/local/src/
-  with_items:
-    - libmatchbox
-    - matchbox-window-manager
-    - plymouth-lite-rbp-git
-
-- name: patch PKGBUILD
-  lineinfile: 
-    dest: "/usr/local/src/{{ item }}/PKGBUILD"
-    regexp: "^arch="
-    line: "arch=('{{ arch }}')"
+    src: "{{source_directory }}/{{ item }}.tar.gz"
+    dest: "{{source_directory }}/"
   with_items:
     - libmatchbox
     - matchbox-window-manager
     - plymouth-lite-rbp-git
 
 - name: chown sources to user
-  shell: "chown -R http /usr/local/src/"
-  warn: false
+  shell: "chown -R http {{source_directory }}/"
 
 - name: build packages
   include_role:
     name: archlinux-build-package
   with_items:
     - name: libmatchbox
-      short: "libmatchbox"
+      pkgname: libmatchbox
       make_depends:
         - xsettings-client
         - startup-notification
     - name: matchbox-window-manager
-      short: "matchbox-window-manager"
+      pkgname: matchbox-window-manager
     - name: plymouth-lite-rbp-git
-      short: plymouth-lite-rbp-git
+      pkgname: plymouth-lite-rbp-git

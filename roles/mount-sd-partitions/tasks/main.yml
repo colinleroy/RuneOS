@@ -1,0 +1,39 @@
+---
+
+- name: create tmp directory
+  tempfile:
+    prefix: raspberry-image
+    state: directory
+  register: tmpmountdir
+
+- name: umount boot partition
+  shell: "umount /dev/{{ local_sd.bootpart }}"
+  become: yes
+  ignore_errors: yes
+
+- name: umount root partition
+  shell: "umount /dev/{{ local_sd.rootpart }}"
+  become: yes
+  ignore_errors: yes
+
+- name: "make directory"
+  file: 
+    path: "{{ tmpmountdir.path }}/{{ item }}"
+    state: directory
+  with_items:
+    - boot
+    - root
+
+- name: register mounts
+  set_fact:
+    boot_mount: "{{ tmpmountdir.path }}/boot"
+    root_mount: "{{ tmpmountdir.path }}/root"
+
+- name: mount boot partition
+  shell: "mount /dev/{{ local_sd.bootpart }} {{ boot_mount }}"
+  become: yes
+
+- name: mount root partition
+  shell: "mount /dev/{{ local_sd.rootpart }} {{ root_mount }}"
+  become: yes
+

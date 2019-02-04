@@ -54,11 +54,12 @@
 - name: stop auditd from spamming dmesg
   lineinfile:
     dest: /boot/cmdline.txt
+    create: yes
     regexp: "^root"
     line: "root=/dev/mmcblk0p2 rw rootwait console=ttyAMA0,115200 console=tty3 selinux=0 plymouth.enable=0 fsck.repair=yes smsc95xx.turbo_mode=N dwc_otg.lpm_enable=0 kgdboc=ttyAMA0,115200 elevator=noop audit=0 quiet consoleblank=0 loglevel=0 logo.nologo"
 
 - name: git clone RuneUI
-  shell: "git clone -b {{ git.branch }} {{ git.repository }} /var/www  || (cd /var/www && git pull)"
+  shell: "git clone -b {{ git.branch }} https://github.com/{{ git.user }}/RuneUI.git /var/www  || (cd /var/www && git pull)"
 
 - name: chown http directory
   file:
@@ -170,7 +171,6 @@
   shell: "systemctl enable {{ item }}"
   with_items:
     - avahi-daemon
-    - haveged
     - nginx
     - redis
     - rune_SY_wrk
@@ -185,6 +185,10 @@
     - redis
     - rune_shutdown
     - php-fpm
+
+- name: enable services
+  shell: "systemctl enable haveged"
+  ignore_errors: true
 
 - name: stop services
   shell: "systemctl stop {{ item }}"

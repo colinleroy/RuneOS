@@ -1,50 +1,38 @@
 ---
 
-- name: create download directory
-  tempfile:
-    prefix: raspberry-image
-    state: directory
-  register: downloaddir
-
-- name: mount root partition
-  shell: "mount /dev/{{ rootpart }} {{ downloaddir.path }}"
-  become: yes
-  warn: false
+- name: mount partitions
+  include_role:
+    name: mount-sd-partitions
 
 - name: change root password
   lineinfile:
-    dest: "{{ downloaddir.path }}/etc/shadow"
+    dest: "{{ root_mount }}/etc/shadow"
     regexp: "^root"
     line: "root:{{ shadow.root }}:17916::::::"
   become: yes
 
 - name: change alarm password
   lineinfile:
-    dest: "{{ downloaddir.path }}/etc/shadow"
+    dest: "{{ root_mount }}/etc/shadow"
     regexp: "^alarm"
     line: "alarm:!!:17916::::::"
   become: yes
 
 - name: allow root SSH login
   lineinfile:
-    dest: "{{ downloaddir.path }}/etc/ssh/sshd_config"
+    dest: "{{ root_mount }}/etc/ssh/sshd_config"
     regexp: "PermitRootLogin"
     line: "PermitRootLogin yes"
   become: yes
 
 - name: allow password SSH login
   lineinfile:
-    dest: "{{ downloaddir.path }}/etc/ssh/sshd_config"
+    dest: "{{ root_mount }}/etc/ssh/sshd_config"
     regexp: "PasswordAuthentication"
     line: "PasswordAuthentication yes"
   become: yes
 
-  become: yes
-- name: umount root partition
-  shell: "umount /dev/{{ rootpart }}"
-  become: yes
+- name: umount partitions
+  include_role:
+    name: umount-sd-partitions
 
-- name: remove tmpdir
-  file:
-    path: "{{ downloaddir.path }}"
-    state: absent

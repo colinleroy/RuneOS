@@ -1,0 +1,10 @@
+--- 
+- name: get arch
+  shell: "source /etc/makepkg.conf && echo $CARCH"
+  register: carch
+- name: register arch
+  set_fact:
+    arch: "{{ carch.stdout_lines[0] }}"
+
+- debug:
+    msg: "arch is now {{ arch }}."

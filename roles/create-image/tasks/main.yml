@@ -1,0 +1,40 @@
+---
+
+- name: mount partitions
+  include_role:
+    name: mount-sd-partitions
+
+- name: "fill boot partition"
+  shell: "LC_ALL=C dd if=/dev/zero of={{ boot_mount }}/zero-fill bs=4M"
+  become: yes
+  register: fillres
+  failed_when: '"No space left on device" not in fillres.stderr'
+
+- name: "fill root partition"
+  shell: "LC_ALL=C dd if=/dev/zero of={{ root_mount }}/zero-fill bs=4M"
+  become: yes
+  register: fillres
+  failed_when: '"No space left on device" not in fillres.stderr'
+
+- name: "remove partition filler file"
+  file:
+    path: "{{ boot_mount }}/zero-fill"
+    state: absent
+  become: yes
+
+- name: "remove partition filler file"
+  file:
+    path: "{{ root_mount }}/zero-fill"
+    state: absent
+  become: yes
+
+- name: umount partitions
+  include_role:
+    name: umount-sd-partitions
+
+- name: dump image
+  shell: "dd if='/dev/{{ local_sd.blockdevice }}' bs=4M count=1024 | gzip > '{{ result_image }}'"
+  become: yes
+
+- debug:
+    msg: "Image written to {{ result_image }}"

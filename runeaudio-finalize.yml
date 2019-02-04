@@ -1,0 +1,12 @@
+---
+- hosts: local
+
+  vars_files:
+    - runeaudio-vars.yml
+  tasks:
+    - name: cleanup
+      include_role:
+        name: runeaudio-cleanup
+    - name: create image
+      include_role:
+        name: create-image

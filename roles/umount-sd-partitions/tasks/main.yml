@@ -1,0 +1,14 @@
+---
+
+- name: umount boot partition
+  shell: "umount /dev/{{ local_sd.bootpart }}"
+  become: yes
+
+- name: umount root partition
+  shell: "umount /dev/{{ local_sd.rootpart }}"
+  become: yes
+
+- name: remove tmpdir
+  file:
+    path: "{{ tmpmountdir.path }}"
+    state: absent

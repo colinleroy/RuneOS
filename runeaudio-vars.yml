@@ -1,26 +1,40 @@
-blockdevice: mmcblk0
-bootpart: mmcblk0p1
-rootpart: mmcblk0p2
+#Where to access SD card during first and third phase (computer)
+local_sd:
+  blockdevice: sdb
+  bootpart: sdb1
+  rootpart: sdb2
 
+#Where to access SD card during second phase (Raspberry)
+remote_sd:
+  blockdevice: mmcblk0
+  bootpart: mmcblk0p1
+  rootpart: mmcblk0p2
+
+#Where to fetch base distribution
 distribution:
   #url: http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz
-  url: http://localhost/ArchLinuxARM-rpi-2-latest.tar.gz
+  url: http://localhost:8000/ArchLinuxARM-rpi-2-latest.tar.gz
 
+#Result image name
+result_image: "/tmp/runeaudio-{{ git.user }}-{{git.branch }}.{{ ansible_date_time.date }}.img.gz"
+
+#Local screen settings during second phase
 hdmi:
   group: 2
   mode: 87
   cvt: 1024 600 60 6 0 0 0
   drive: 1
 
+#Default root password (rune)
 shadow:
   root: $6$tc3SJUJFh$A.lVN4lk5tUvK5.KbvNRFrN4HfMvekizCrJ.eetGi9yfM9lrojwbwZn0fJUjSRa7DeHM/TwCDnnoQF1KvqezL0
 
-arch: armv7h
-
+#Where to fetch Rune Web UI
 git:
-  repository: https://github.com/colinleroy/RuneUI.git
+  user: colinleroy
   branch: 0.5b-colin
 
+#Packages to remove
 removed_packages:
   - jfsutils
   - lvm2
@@ -28,6 +42,7 @@ removed_packages:
   - man-pages
   - reiserfsprogs
 
+#Packages to install
 packages:
   - git
   - chrony
@@ -151,18 +166,22 @@ packages:
   - rsync
   - hiredis
 
+source_directory: /usr/local/src
+cleanup_sources: true
+
+#Source packages to build
 sources:
   - name: mpdscribble-rune
-    short: "mpdscribble"
+    pkgname: mpdscribble
     pass: 1
   - name: nginx-rune
-    short: "nginx-rune"
+    pkgname: nginx-rune
     flags: "--force"
     make_depends:
       - git
     pass: 1
   - name: php-rune
-    short: "php-rune"
+    pkgname: php-rune
     flags: "--force"
     make_depends:
       - file
@@ -180,82 +199,74 @@ sources:
       - libxml2
     pass: 1
   - name: php-libevent
-    short: "php-libevent"
+    pkgname: php-libevent
     pass: 1
   - name: php-pthreads
-    short: "php-pthreads"
+    pkgname: php-pthreads
     pass: 1
   - name: phpredis-rune
-    short: "phpredis"
+    pkgname: phpredis
     pass: 1
   - name: phpiredis-rune
-    short: "phpiredis"
+    pkgname: phpiredis
     pass: 1
   - name: libalac-rune
-    short: "alac"
+    pkgname: alac
     make_depends:
       - git
     pass: 2
   - name: shairport-sync-rune
-    short: "shairport-sync-rune"
+    pkgname: shairport-sync-rune
     make_depends:
       - git
       - libconfig
     pass: 2
   - name: libupnpp-rune
-    short: "libupnpp-rune"
+    pkgname: libupnpp-rune
     make_depends:
       - git
       - autoconf
     pass: 2
   - name: upmpdcli-rune
-    short: "upmpdcli-rune"
+    pkgname: upmpdcli-rune
     pass: 2
   - name: ashuffle-rune
-    short: "ashuffle-rune"
+    pkgname: ashuffle-rune
     make_depends:
       - clang
       - git
     pass: 2
 # PULLED FROM THE WEB by Spotify
 #  - name: libspotify
-#    short: "libspotify"
+#    pkgname: libspotify
 #    pass: 2
 #  - name: spop-rune
-#    short: "spop-rune"
+#    pkgname: spop-rune
 #    make_depends:
 #      - cmake
 #      - python2
 #    pass: 2
   - name: hfsprogs-rune
-    short: "hfsprogs-rune"
+    pkgname: hfsprogs-rune
     pass: 2
   - name: hfsutils-rune
-    short: "hfsutils-rune"
+    pkgname: hfsutils-rune
     pass: 2
   - name: amixer-webui
-    short: "amixer-webui"
+    pkgname: amixer-webui
     make_depends:
       - python
       - python-pip
       - git
     pass: 2
   - name: snapcast
-    short: "snapcast"
+    pkgname: snapcast
     make_depends:
       - git
       - alsa-utils
     pass: 2
-# DOESN'T BUILD
-#  - name: bluez-utils-rune
-#    short: "bluez-utils"
-#    make_depends:
-#      - dbus
-#      - libical
-#      - systemd
-#    pass: 3
   - name: bluez-alsa-git
-    short: "bluez-alsa-git"
+    pkgname: bluez-alsa-git
     make_depends:
       - git
       - bluez-libs
@@ -263,11 +274,11 @@ sources:
       - sbc
     pass: 3
   - name: pi-bluetooth-rune
-    short: "pi-bluetooth"
+    pkgname: pi-bluetooth
     pass: 3
 # DOESN'T BUILD 
 #  - name: linux-rune-4.14.34-1_dsd_384k
-#    short: "linux-raspberrypi-dsd-384k"
+#    pkgname: linux-raspberrypi-dsd-384k
 #    make_depends:
 #      - xmlto
 #      - docbook-xsl
@@ -278,6 +289,7 @@ sources:
 #    flags: "--force"
 #    pass: 3
 
+#RuneAudio configuration files
 config_files:
   - src: /var/www/app/config/_os/etc/motd
     dest: /etc/motd

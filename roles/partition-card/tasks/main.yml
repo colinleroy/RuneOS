@@ -1,23 +1,23 @@
 
 - parted:
-    device: "/dev/{{ blockdevice }}"
+    device: "/dev/{{ local_sd.blockdevice }}"
     unit: MiB
   register: blk_info
   become: yes
 
 - name: umount boot partition
-  shell: "umount /dev/{{ bootpart }}"
+  shell: "umount /dev/{{ local_sd.bootpart }}"
   become: yes
   ignore_errors: yes
 
 - name: umount root partition
-  shell: "umount /dev/{{ rootpart }}"
+  shell: "umount /dev/{{ local_sd.rootpart }}"
   become: yes
   ignore_errors: yes
 
 - name: remove partitions
   parted:
-    device: "/dev/{{ blockdevice }}"
+    device: "/dev/{{ local_sd.blockdevice }}"
     number: "{{ item.num }}"
     state: absent
   with_items:
@@ -26,38 +26,35 @@
 
 - name: create boot partition 
   parted:
-    device: "/dev/{{ blockdevice }}"
+    device: "/dev/{{ local_sd.blockdevice }}"
     number: 1
     state: present
     part_end: 105MiB
   become: yes
 
 - name: set boot partition type
-  shell: "sfdisk --part-type /dev/{{ blockdevice }} 1 c"
+  shell: "sfdisk --part-type /dev/{{ local_sd.blockdevice }} 1 c"
   become: yes
 
 - name: create root partition 
   parted:
-    device: "/dev/{{ blockdevice }}"
+    device: "/dev/{{ local_sd.blockdevice }}"
     number: 2
     state: present
     part_start: 106MiB
+    part_end: 3800MiB
   become: yes
 
 - name: create boot filesystem
   filesystem:
-    dev: "/dev/{{ bootpart }}"
+    dev: "/dev/{{ local_sd.bootpart }}"
     fstype: vfat
     force: yes
   become: yes
 
 - name: create root system
   filesystem:
-    dev: "/dev/{{ rootpart }}"
+    dev: "/dev/{{ local_sd.rootpart }}"
     fstype: ext4
     force: yes
   become: yes
-
-- name: wait for mount
-  pause:
-    seconds: 15

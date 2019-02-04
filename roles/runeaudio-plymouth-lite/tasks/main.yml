@@ -38,6 +38,11 @@
     src: issue
     dest: /etc/issue
 
+- name: motd
+  template:
+    src: motd
+    dest: /etc/motd
+
 - name: enable plymouth-lite
   shell: "systemctl enable {{ item }}"
   with_items:
