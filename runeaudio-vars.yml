@@ -13,7 +13,7 @@ remote_sd:
 #Where to fetch base distribution
 distribution:
   #url: http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz
-  url: http://localhost:8000/ArchLinuxARM-rpi-2-latest.tar.gz
+  url: http://localhost/ArchLinuxARM-rpi-2-latest.tar.gz
 
 #Result image name
 result_image: "/tmp/runeaudio-{{ git.user }}-{{git.branch }}.{{ ansible_date_time.date }}.img.gz"
