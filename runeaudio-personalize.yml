@@ -1,0 +1,18 @@
+---
+- hosts: local
+  gather_facts: no
+  tasks:
+    - add_host:
+        name: "{{ raspberry_ip }}"
+        groups: raspberry
+
+- hosts: raspberry
+  vars_files:
+    - runeaudio-vars.yml
+  tasks:
+    - name: setup logins
+      include_role:
+        name: setup-logins
+      vars:
+        - use_ssh_keys: true
+        - disable_root_password: true

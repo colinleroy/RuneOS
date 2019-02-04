@@ -1,8 +1,8 @@
 #Where to access SD card during first and third phase (computer)
 local_sd:
-  blockdevice: sdb
-  bootpart: sdb1
-  rootpart: sdb2
+  blockdevice: mmcblk0
+  bootpart: mmcblk0p1
+  rootpart: mmcblk0p2
 
 #Where to access SD card during second phase (Raspberry)
 remote_sd:
