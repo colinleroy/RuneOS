@@ -42,7 +42,6 @@
     number: 2
     state: present
     part_start: 106MiB
-    part_end: 3800MiB
   become: yes
 
 - name: create boot filesystem
