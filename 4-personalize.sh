@@ -5,6 +5,6 @@ if [ "$1" = "" ]; then
 	exit 1
 fi
 
-ssh -vv root@$1 "which python || (pacman-key --init && pacman-key --populate archlinuxarm && pacman -S python --noconfirm)"
+. ./.setup-ssh-key.sh $1
 
-ansible-playbook -i hosts --ask-pass --user root runeaudio-personalize.yml --extra-vars "raspberry_ip=$1"
+ansible-playbook -i hosts $EXTRA_ARGS --user root runeaudio-personalize.yml --extra-vars "raspberry_ip=$1"

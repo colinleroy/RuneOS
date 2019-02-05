@@ -10,9 +10,9 @@
   vars_files:
     - runeaudio-vars.yml
   tasks:
-    - name: setup logins
+    - name: setup display
       include_role:
-        name: setup-logins
+        name: setup-display
       vars:
-        - use_ssh_keys: true
-        - disable_root_password: true
+        - remote: true
+        - boot_mount: /boot

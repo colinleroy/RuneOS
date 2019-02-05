@@ -3,6 +3,7 @@
 - name: mount partitions
   include_role:
     name: mount-sd-partitions
+  when: remote is not defined or remote == false
 
 - name: HDMI group
   lineinfile:
@@ -63,4 +64,5 @@
 - name: umount partitions
   include_role:
     name: umount-sd-partitions
+  when: remote is not defined or remote == false
 
