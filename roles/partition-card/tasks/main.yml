@@ -29,7 +29,8 @@
     device: "/dev/{{ local_sd.blockdevice }}"
     number: 1
     state: present
-    part_end: 105MiB
+    part_start: 2048s
+    part_end: "{{ (boot_size_sectors + 2047) | int }}s"
   become: yes
 
 - name: set boot partition type
@@ -41,7 +42,7 @@
     device: "/dev/{{ local_sd.blockdevice }}"
     number: 2
     state: present
-    part_start: 106MiB
+    part_start: "{{ (boot_size_sectors + 2048) | int }}s"
   become: yes
 
 - name: create boot filesystem

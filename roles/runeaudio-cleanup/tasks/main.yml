@@ -21,12 +21,49 @@
   include_role:
     name: umount-sd-partitions
 
-- name: check root partition
+- name: check root filesystem
   shell: "e2fsck -f -y /dev/{{ local_sd.rootpart }}"
   become: yes
   when: cleanup_sources is defined and cleanup_sources == true
 
-- name: shrink root partition
-  shell: "resize2fs /dev/{{ local_sd.rootpart }} 3800M"
+- name: shrink root filesystem
+  shell: "resize2fs /dev/{{ local_sd.rootpart }} {{ root_size_sectors }}s"
   become: yes
   when: cleanup_sources is defined and cleanup_sources == true
+
+- parted:
+    device: "/dev/{{ local_sd.blockdevice }}"
+    unit: MiB
+  register: blk_info
+  become: yes
+
+- name: repartition - remove partitions
+  parted:
+    device: "/dev/{{ local_sd.blockdevice }}"
+    number: "{{ item.num }}"
+    state: absent
+  with_items:
+   - "{{ blk_info.partitions }}"
+  become: yes
+
+- name: repartition - create boot partition
+  parted:
+    device: "/dev/{{ local_sd.blockdevice }}"
+    number: 1
+    state: present
+    part_start: 2048s
+    part_end: "{{ (boot_size_sectors + 2047) | int }}s"
+  become: yes
+
+- name: repartition - set boot partition type
+  shell: "sfdisk --part-type /dev/{{ local_sd.blockdevice }} 1 c"
+  become: yes
+
+- name: repartition - create root partition 
+  parted:
+    device: "/dev/{{ local_sd.blockdevice }}"
+    number: 2
+    state: present
+    part_start: "{{ (boot_size_sectors + 2048) | int }}s"
+    part_end: "{{ (2047 + boot_size_sectors + root_size_sectors) | int }}s"
+  become: yes

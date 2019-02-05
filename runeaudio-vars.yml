@@ -10,6 +10,11 @@ remote_sd:
   bootpart: mmcblk0p1
   rootpart: mmcblk0p2
 
+#Partition sizes (for an image suitable for a 4GB card)
+#Deployment needs at least a 8GB card though
+boot_size_sectors: 204800
+root_size_sectors: 7577600
+
 #Where to fetch base distribution
 distribution:
   #url: http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz

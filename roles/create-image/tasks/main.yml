@@ -33,7 +33,7 @@
     name: umount-sd-partitions
 
 - name: dump image
-  shell: "dd if='/dev/{{ local_sd.blockdevice }}' bs=4M count=1024 | gzip > '{{ result_image }}'"
+  shell: "dd if='/dev/{{ local_sd.blockdevice }}' bs=1M count={{ (((2048 + boot_size_sectors + root_size_sectors) * 512) / (1024 * 1024)) | int }} | gzip > '{{ result_image }}'"
   become: yes
 
 - debug:
