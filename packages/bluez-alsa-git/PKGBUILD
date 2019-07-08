@@ -8,7 +8,7 @@ url="https://github.com/Arkq/bluez-alsa"
 license=('MIT')
 depends=('bluez-libs' 'glib2' 'libfdk-aac' 'sbc' 'alsa-lib')
 makedepends=('git')
-source=("$pkgname::git+https://github.com/Arkq/bluez-alsa.git"
+source=("$pkgname::git+https://github.com/Arkq/bluez-alsa.git#commit=71d2eb4a4127e71f4223ba2fd39b0bb36fdd3fea"
 	bluealsa.service
 	bluealsa.tmpfiles
 	bluealsa.sysusers)

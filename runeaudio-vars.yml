@@ -127,6 +127,7 @@ packages:
   - perl-www-robotrules
   - smartmontools
   - parted
+  - python-pip
   - python2-flask
   - cronie
   - xorg-iceauth
@@ -249,16 +250,6 @@ sources:
       - clang
       - git
     pass: 2
-# PULLED FROM THE WEB by Spotify
-#  - name: libspotify
-#    pkgname: libspotify
-#    pass: 2
-#  - name: spop-rune
-#    pkgname: spop-rune
-#    make_depends:
-#      - cmake
-#      - python2
-#    pass: 2
   - name: hfsprogs-rune
     pkgname: hfsprogs-rune
     pass: 2
@@ -289,18 +280,6 @@ sources:
   - name: pi-bluetooth-rune
     pkgname: pi-bluetooth
     pass: 3
-# DOESN'T BUILD 
-#  - name: linux-rune-4.14.34-1_dsd_384k
-#    pkgname: linux-raspberrypi-dsd-384k
-#    make_depends:
-#      - xmlto
-#      - docbook-xsl
-#      - kmod
-#      - inetutils
-#      - bc
-#      - git
-#    flags: "--force"
-#    pass: 3
 
 #RuneAudio configuration files
 config_files:

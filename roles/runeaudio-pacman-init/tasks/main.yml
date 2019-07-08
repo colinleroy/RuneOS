@@ -6,3 +6,6 @@
 - name: install necessary packages
   shell: "pacman -S --needed --noconfirm {% for item in packages %} {{ item }} {% endfor %}"
   when: packages is defined
+
+- name: install RPi.GPIO
+  shell: "pip install RPi.GPIO"
