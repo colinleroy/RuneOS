@@ -24,6 +24,13 @@
     src: issue.config
     dest: "{{ root_mount }}/etc/issue"
   become: yes
+
+- name: eth0
+  template:
+    src: eth0.j2
+    dest: "{{ root_mount }}/etc/netctl/eth0"
+  become: yes
+
 - name: umount partitions
   include_role:
     name: umount-sd-partitions
