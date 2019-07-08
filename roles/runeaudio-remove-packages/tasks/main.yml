@@ -1,0 +1,5 @@
+---
+
+- name: remove unnecessary packages
+  shell: "pacman -R --noconfirm {% for item in removed_packages %} {{ item }} {% endfor %} || true"
+  when: removed_packages is defined

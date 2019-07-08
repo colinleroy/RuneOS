@@ -46,6 +46,14 @@ removed_packages:
   - man-db
   - man-pages
   - reiserfsprogs
+  - gcc
+  - clang
+  - compiler-rt
+  - bison
+  - autoconf
+  - automake
+  - thin-provisioning-tools
+  - fakeroot
 
 #Packages to install
 packages:
@@ -155,6 +163,7 @@ packages:
   - libxxf86vm
   - xf86-input-libinput
   - xf86-video-fbdev
+  - xinput_calibrator
   - xbindkeys
   - ffmpeg
   - mpd

@@ -16,3 +16,5 @@
       vars:
         - remote: true
         - boot_mount: /boot
+    - name: reboot
+      shell: "reboot"

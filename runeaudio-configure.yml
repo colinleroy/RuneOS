@@ -25,3 +25,8 @@
     - name: configure plymouth-lite
       include_role:
         name: runeaudio-plymouth-lite
+    - name: remove unused packages
+      include_role:
+        name: runeaudio-remove-packages
+    - name: shutdown
+      shell: "shutdown -h now"
