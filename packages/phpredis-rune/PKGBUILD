@@ -11,7 +11,7 @@ license=('PHP')
 depends=('php-rune')
 ininame="redis.ini"
 inifile="etc/php/conf.d/${ininame}"
-source=(git://github.com/nicolasff/phpredis.git)
+source=(git://github.com/nicolasff/phpredis.git#commit=3ce9d6b1623be5b29b0a211cdbc69e355a34397d)
 md5sums=('SKIP')
 builddir=phpredis
  

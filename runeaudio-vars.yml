@@ -73,7 +73,6 @@ packages:
   - ifplugd
   - wireless_tools
   - wpa_supplicant
-  - wpa_actiond
   - hostapd
   - nfs-utils
   - libupnp

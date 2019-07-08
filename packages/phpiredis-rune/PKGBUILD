@@ -11,7 +11,7 @@ license=('PHP')
 depends=('php-rune' 'hiredis')
 ininame="phpiredis.ini"
 inifile="etc/php/conf.d/${ininame}"
-source=(git://github.com/nrk/phpiredis.git)
+source=(git://github.com/nrk/phpiredis.git#commit=981d455034a48bb19db39c578e9c16d889289b99)
 md5sums=('SKIP')
  
 build() {
