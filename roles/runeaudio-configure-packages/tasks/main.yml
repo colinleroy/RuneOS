@@ -178,6 +178,7 @@
     - redis
     - rune_shutdown
     - php-fpm
+    - ntpd
 
 - name: enable services
   shell: "systemctl enable haveged"

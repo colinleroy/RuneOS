@@ -179,6 +179,7 @@ packages:
   - bluez
   - rsync
   - hiredis
+  - ntp
 
 source_directory: /usr/local/src
 cleanup_sources: true
