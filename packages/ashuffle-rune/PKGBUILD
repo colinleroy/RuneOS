@@ -10,7 +10,7 @@ url="https://github.com/Joshkunz/ashuffle"
 license=('MIT')
 depends=('libmpdclient')
 makedepends=('clang' 'git')
-source=('ashuffle-rune::git+https://github.com/Joshkunz/ashuffle'
+source=('ashuffle-rune::git+https://github.com/Joshkunz/ashuffle#commit=e8708615397c601eadd2e3988b581769392936a2'
         'ashuffle.service')
 sha1sums=('SKIP'
           'SKIP')
