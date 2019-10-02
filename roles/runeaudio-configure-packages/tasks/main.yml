@@ -178,6 +178,7 @@
     - redis
     - rune_shutdown
     - php-fpm
+    - ntpdate
     - ntpd
 
 - name: enable services
