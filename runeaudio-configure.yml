@@ -28,5 +28,9 @@
     - name: remove unused packages
       include_role:
         name: runeaudio-remove-packages
+    - name: Disable systemd-networkd-wait-online
+      shell: systemctl disable systemd-networkd-wait-online
+    - name: fix localhost in nginx
+      shell: "sed -i 's/localhost/127.0.0.1/g' /etc/nginx/nginx-prod.conf /etc/nginx/nginx.conf"
     - name: shutdown
       shell: "shutdown -h now"
