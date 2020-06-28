@@ -24,10 +24,17 @@ distribution:
 result_image: "/tmp/runeaudio-{{ git.user }}-{{git.branch }}.{{ ansible_date_time.date }}.img.gz"
 
 #Local screen settings during second phase
+#7"
+#hdmi:
+#  group: 2
+#  mode: 87
+#  cvt: 1024 600 60 6 0 0 0
+#  drive: 1
+#5"
 hdmi:
   group: 2
   mode: 87
-  cvt: 1024 600 60 6 0 0 0
+  cvt: 800 480 60 6 0 0 0
   drive: 1
 
 #Default root password (rune)
@@ -180,6 +187,7 @@ packages:
   - rsync
   - hiredis
   - ntp
+  - gdb
 
 source_directory: /usr/local/src
 cleanup_sources: true
