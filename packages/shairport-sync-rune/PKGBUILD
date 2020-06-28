@@ -24,7 +24,6 @@ sha1sums=('SKIP'
 
 prepare() {
   cd shairport-sync-$pkgver
-  patch -R < ../useradd.patch  
 }
 
 build() {
