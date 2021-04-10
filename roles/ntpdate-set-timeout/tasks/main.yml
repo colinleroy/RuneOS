@@ -1,0 +1,9 @@
+---
+
+- name: deploy unit file
+  template:
+    src: ntpdate.service.j2
+    dest: /usr/lib/systemd/system/ntpdate.service
+    mode: 0644
+    owner: root
+    group: root
